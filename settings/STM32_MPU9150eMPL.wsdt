@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Workspace>
+  <ConfigDictionary>
+    
+  <CurrentConfigs><Project>STM32_MPU9150eMPL/Debug</Project></CurrentConfigs></ConfigDictionary>
+  <Desktop>
+    <Static>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>239</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+      </Workspace>
+      <Build>
+        
+        
+        
+        
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>767</ColumnWidth1><ColumnWidth2>586</ColumnWidth2><ColumnWidth3>65</ColumnWidth3></Build>
+    <TerminalIO/><Debug-Log><ColumnWidth0>22</ColumnWidth0><ColumnWidth1>1859</ColumnWidth1></Debug-Log><Breakpoints><PreferedWindows><Position>3</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows/></PreferedWindows><col-names><item>Breakpoint</item><item>_I0</item></col-names><col-widths><item>500</item><item>35</item></col-widths></Breakpoints></Static>
+    <Windows>
+      
+      
+    <Wnd0>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-29747-15907</Identity>
+            <TabName>Workspace</TabName>
+            <Factory>Workspace</Factory>
+            <Session>
+              
+            <NodeDict><ExpandedNode>STM32_MPU9150eMPL</ExpandedNode><ExpandedNode>STM32_MPU9150eMPL/Application</ExpandedNode><ExpandedNode>STM32_MPU9150eMPL/Application/MPU9150eMPL</ExpandedNode><ExpandedNode>STM32_MPU9150eMPL/Application/VirtualCOMport</ExpandedNode><ExpandedNode>STM32_MPU9150eMPL/Output</ExpandedNode><ExpandedNode>STM32_MPU9150eMPL/STM32F10x</ExpandedNode><ExpandedNode>STM32_MPU9150eMPL/STM32F10x/CMSIS</ExpandedNode><ExpandedNode>STM32_MPU9150eMPL/STM32F10x/CPAL_HAL</ExpandedNode><ExpandedNode>STM32_MPU9150eMPL/STM32F10x/STM32_CPAL_Driver</ExpandedNode><ExpandedNode>STM32_MPU9150eMPL/eMPL</ExpandedNode></NodeDict></Session>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-21284-20141</Identity>
+            <TabName>Build</TabName>
+            <Factory>Build</Factory>
+            <Session/>
+          </Tab>
+        <Tab><Identity>TabID-29785-49</Identity><TabName>Debug Log</TabName><Factory>Debug-Log</Factory><Session/></Tab></Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd1></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Libraries\STM32_CPAL_Driver\inc\cpal_conf.h</Filename><XPos>0</XPos><YPos>87</YPos><SelStart>24621</SelStart><SelEnd>24621</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\eMPL\inv_mpu_dmp_motion_driver.c</Filename><XPos>0</XPos><YPos>1055</YPos><SelStart>47721</SelStart><SelEnd>47721</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\eMPL\inv_mpu.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>307</SelStart><SelEnd>307</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Application\src\stm32_CPAL_mpu9150.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>1368</SelStart><SelEnd>1368</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\main.c</Filename><XPos>0</XPos><YPos>15</YPos><SelStart>1720</SelStart><SelEnd>1720</SelEnd></Tab><ActiveTab>4</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Libraries\STM32_CPAL_Driver\src\cpal_usercallback_template.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>2610</SelStart><SelEnd>2610</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\eMPL\inv_mpu_dmp_motion_driver.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>1281</SelStart><SelEnd>1281</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Application\inc\stm32_CPAL_mpu9150.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>911</SelStart><SelEnd>911</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Application\inc\stm32_it.h</Filename><XPos>0</XPos><YPos>24</YPos><SelStart>1764</SelStart><SelEnd>1764</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-00d5da38><key>iaridepm.enu1</key></Toolbar-00d5da38></Sizes></Row0></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>804</Bottom><Right>340</Right><x>-2</x><y>-2</y><xscreen>142</xscreen><yscreen>145</yscreen><sizeHorzCX>73958</sizeHorzCX><sizeHorzCY>145291</sizeHorzCY><sizeVertCX>178125</sizeVertCX><sizeVertCY>807615</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>149</Bottom><Right>1922</Right><x>-2</x><y>-2</y><xscreen>1924</xscreen><yscreen>151</yscreen><sizeHorzCX>1002083</sizeHorzCX><sizeHorzCY>151303</sizeHorzCY><sizeVertCX>73958</sizeVertCX><sizeVertCY>145291</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Workspace>
+
+
