@@ -1,17 +1,8 @@
-/**
-  * @file    utils.c 
-  * @author  Harinadha Reddy
-  * @version V1.0
-  * @date    20/07/2012
-  * @brief   This file includes some utility functions
-  * @details
-  *
-  * THIS SOURCE CODE IS PROTECTED BY A LICENSE.
-  *
-  * <h2><center>&copy; COPYRIGHT 2012 VE Lab, Chung-Ang Univ </center></h2>
-  */
-
-
+// Source file has defines of some commonly used utility functions. 
+// Changelog:
+// 		 2013-06-25 - Initial release.
+//     2012-07-20 - First version.
+// Author: Harinadha Reddy Chintalapalli
 
 /**
  * \include
@@ -237,7 +228,7 @@ void Buffer_To_Float(u8* pBuffer, float t)
   * @param Qvals  : Number of fraction bits.
   * @retval None
   */
-s16 FloatToFixed(float floatValue, Qvals q)
+s16 FloatToFixed(float floatValue, uint8_t q)
 {
     int temp = (int)((floatValue) * (int)(1 << ((int)q)));
     if (temp > 32767) temp = 32767;
@@ -250,7 +241,7 @@ s16 FloatToFixed(float floatValue, Qvals q)
   * @param Qvals : Number of fraction bits.
   * @retval None
   */
-float FixedToFloat(s16 fixedValue, Qvals q)
+float FixedToFloat(s16 fixedValue, uint8_t q)
 {
     return ((float)(fixedValue) / (float)(1 << ((int)q)));
 }
@@ -368,8 +359,6 @@ void QuaternionInverse(float* pInQuat,float* pOutQuat)
         pOutQuat[3] *= norm;
     }    
 }
-//void delay_us(uint32_t us);
-
 
 void Delay_ms(u16 ms)
 {
@@ -393,4 +382,4 @@ void Delay_ms(u16 ms)
  * @}
  */ /* end of group Utils */
 
-/******************* (C) COPYRIGHT 2012 VE Lab, Chung-Ang Univ *****END OF FILE****/
+/******************* (c) COPYRIGHT 2013 Harinadha Reddy Chintalapalli *****END OF FILE****/

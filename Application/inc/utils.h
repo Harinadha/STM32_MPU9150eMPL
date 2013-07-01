@@ -1,26 +1,8 @@
-/**
-  * @file    utils.h 
-  * @author  ART Team IMS-Systems Lab
-  * @version V2.0.0
-  * @date    09/20/2010
-  * @brief   Header for utils.c
-  * @details
-  *
-  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-  * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
-  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
-  *
-  * THIS SOURCE CODE IS PROTECTED BY A LICENSE.
-  * FOR MORE INFORMATION PLEASE CAREFULLY READ THE LICENSE AGREEMENT FILE LOCATED
-  * IN THE ROOT DIRECTORY OF THIS FIRMWARE PACKAGE.
-  *
-  * <h2><center>&copy; COPYRIGHT 2010 STMicroelectronics</center></h2>
-  */
-
-
+// Source file has defines of some commonly used utility functions. 
+// Changelog:
+// 		 2013-06-25 - Initial release.
+//     2012-07-20 - First version.
+// Author: Harinadha Reddy Chintalapalli
 
 
 /** \def
@@ -48,34 +30,6 @@
 */
 typedef enum {FAILED = 0, PASSED = !FAILED} TestStatus;
 
-/** @enum Qvals
-*/
-typedef enum 
-{
-    CalibratedThermometer = 8,
-    CalibratedGyroscope = 11,
-    CalibratedAccelerometer = 11,
-    CalibratedMagnetometer = 11,
-    Quaternion = 15,
-    ThermometerSensitivity = 0,
-    ThermometerBias = 0,
-    GyroscopeSensitivity = 7,
-    GyroscopeSampled250dps = 0,
-    GyroscopeBiasAt25degC = 3,
-    GyroscopeBiasTempSensitivity = 11,
-    GyroscopeSampledBias = 3,
-    AccelerometerSensitivity = 0,
-    AccelerometerBias = 3,
-    AccelerometerSampled2g = 4,
-    MagnetometerSensitivity = 4,
-    MagnetometerBias = 4,
-    MagnetometerHardIronBias = 11,
-    AlgorithmKp_Qval = 3,
-    AlgorithmKi_Qval = 3,
-    AlgorithmInitKp_Qval = 11,
-    AlgorithmInitPeriod_Qval = 11,
-}Qvals;
-
 /**\def
  *  Computes the absolute value of its argument \a x.
 */
@@ -86,9 +40,6 @@ typedef enum
 */
 #define U_ID_Base_Register_Address   (0x1FFFF7E8)
 #define MCU_ID ((const unsigned char *)(U_ID_Base_Register_Address))
-
-#define MARG_DeviceID 0x039F
-
 
 /** \addtogroup Utils_Function
  *  \{
@@ -103,8 +54,8 @@ TestStatus Buffercmp(u32* pBuffer1, u32* pBuffer2, u16 BufferLength);
 TestStatus eBuffercmp(u32* pBuffer, u16 BufferLength);
 void Float_To_Buffer(float t, u8* pBuffer);
 void Buffer_To_Float(u8* pBuffer,float t);
-s16 FloatToFixed(float floatValue, Qvals q);
-float FixedToFloat(s16 fixedValue, Qvals q);
+s16 FloatToFixed(float floatValue, uint8_t q);
+float FixedToFloat(s16 fixedValue, uint8_t q);
 void InsertChecksum(unsigned char* pInputPacket, unsigned char* pOutputPacket, u8 NBofBytes);
 void EncodePacket(unsigned char* pInputPacket,unsigned char* pEncodedPacket, u8 NBofBytes, u8* NBofBytesOut );
 void DecodePacket(unsigned char* pInputPacket,unsigned char* pDecodedPacket, u8 NBofBytes );
@@ -132,4 +83,4 @@ static inline void delay_us(uint32_t us)
  */ /* end of group Utils */ 
 #endif /* __UTILS_H */
 
-/******************* (C) COPYRIGHT 2012 VE Lab, Chung-Ang Univ *****END OF FILE****/
+/******************* (c) COPYRIGHT 2013 Harinadha Reddy Chintalapalli *****END OF FILE****/

@@ -32,7 +32,7 @@ THE SOFTWARE.
 #include "usb_pwr.h"
 #include "stm32_CPAL_mpu9150.h"
 #include "mpu9150_interrupts.h"
-#include "utils.h"
+//#include "utils.h"
 
 #include <string.h>
 #include "inv_mpu.h"
@@ -281,9 +281,12 @@ static void handle_input(void)
 
     /* Check the commands in the data received from USB*/
     rx_new = 0;
-		// check USB_Rx_Buffer & extract commands.		
-		c = (USB_Rx_Buffer);
-			
+		/* Check USB_Rx_Buffer for extracting commands.
+		 * It processes one character at a time. After constructing 
+		 * a full command consisting of 4 char's, it proceeds to execute
+		 * that command.
+		 */
+		c = USB_Rx_Buffer;			
 		if(count_out !=0)
 			rx_new = count_out;
 		
@@ -304,7 +307,8 @@ static void handle_input(void)
         hal.rx.header[0] = header[0];
     if (!hal.rx.cmd)
         return;
-
+		/********************************************************************/
+		
     switch (hal.rx.cmd) {
     /* These commands turn the hardware sensors on/off. */
     case '8':
@@ -460,10 +464,6 @@ static void handle_input(void)
  * ISR context. In this example, it sets a flag protecting the FIFO read
  * function.
  */
-//static void gyro_data_ready_cb(void)
-//{
-//    hal.new_gyro = 1;
-//}
 void EXTI15_10_IRQHandler(void) 
 {  
    if(EXTI_GetITStatus(EXTI_Line12))
@@ -475,6 +475,10 @@ void EXTI15_10_IRQHandler(void)
         EXTI_ClearITPendingBit(EXTI_Line12);        
    }   
 }
+/* Simple application code for testing MPU9150 with STM32F103xx family microcontrollers.
+ * It initializes Clock system, USB, I2C & MPU9150. Listens to the data received on Virtual
+ * COM port, constructs commands & executes them.
+ */
 void Stm32MPU9150test(void)
 {
   	int result;
@@ -488,14 +492,14 @@ void Stm32MPU9150test(void)
 		USB_Interrupts_Config();
 	  USB_Init();
 		//---------1. Initialize CPAL for I2C communication with MPU9150----------
-		Delay(993400);
-		//while(bDeviceState != CONFIGURED); // wait until USB is configured, Hari
+		Delay(993400);											 // USB configuration takes some time ( useful in case USB not present)
+		//while(bDeviceState != CONFIGURED); // If USB present, Wait until USB is configured
 		MPU9150_Config();
 		if(MPU9150_GetStatus() == SUCCESS)
 		{
-			
+			Virtual_Com_Write_Buffer("MPU9150-Status is fine", 22);  
 		}
-		//---------2. Implement an callback from EXTI ISR in stm32 to do "hal.new_gyro = 1;" ----------
+		//---------2. Configure INT pin of STM32 for MPU9150 interrupts ----------
 		MPU9150_Interrupt_Init(MPU9150_INT, MPU9150_INT_MODE_EXTI);
 		/* If you're not using an MPU9150 AND you're not using DMP features, this
      * function will place all slaves on the primary bus.
@@ -560,7 +564,7 @@ void Stm32MPU9150test(void)
     t_err = dmp_set_fifo_rate(DEFAULT_MPU_HZ);
     t_err = mpu_set_dmp_state(1);
     hal.dmp_on = 1;
-		//--------------- 3.NOW ENABLE INTERRUPT --------------
+		//--------------- 3. Enable the Interrupt now --------------
 		MPU9150_Interrupt_Cmd(MPU9150_INT,ENABLE);
 		
 		while (1) {
@@ -652,6 +656,7 @@ void Stm32MPU9150test(void)
 
 void SimpleUSBvirtualCOMtest()
 {
+	Set_System();
 	Set_USBClock();
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
 	USB_Interrupts_Config();
