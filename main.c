@@ -481,7 +481,7 @@ void EXTI15_10_IRQHandler(void)
  */
 void Stm32MPU9150test(void)
 {
-  	int result;
+    int result;
     unsigned char accel_fsr;
     unsigned short gyro_rate, gyro_fsr;
     //unsigned long timestamp;
