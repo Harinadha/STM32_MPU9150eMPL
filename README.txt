@@ -15,6 +15,6 @@ GND ------------- GND
 VCC ------------- 3.3v
 SCL ------------- SCL ( I2C2 )
 SDA ------------- SDA ( I2C2 )
-INT ------------- PC12
+INT ------------- PC9
 
 You may find the pre-compiled binary file (STM32_MPU9150eMPL.hex) in the Debug/Exe folder in case if you want to FLASH the program directly on to your board ( In this case, make sure your micro is STM32F103RB & all the connections are same as here).Documentation will be available in near future using Doxygen-style comments placed in each definition file. This documentation will be available in HTML format on the http://harinadha.wordpress.com website, which also holds additional helpful information.

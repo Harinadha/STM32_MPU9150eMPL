@@ -28,14 +28,14 @@ THE SOFTWARE.
 */
 #include "mpu9150_interrupts.h"
 
-void MPU9150_Interrupt_Init(MPU9150int_TypeDef MPU9150int, MPU9150intMode_TypeDef MPU9150int_Mode)
+void MPU9150_Interrupt_Init(MPU9150intMode_TypeDef MPU9150int_Mode)
 {
 
   EXTI_InitTypeDef EXTI_InitStructure;
   GPIO_InitTypeDef GPIO_InitStructure;
 
   /* Enable MPU9150int GPIO clocks */
-  RCC_APB2PeriphClockCmd(MPU9150_INT_GPIO_CLK, ENABLE);
+  RCC_APB2PeriphClockCmd(MPU9150_INT_GPIO_CLK | RCC_APB2Periph_AFIO, ENABLE);
   
   /* Configure MPU9150int pin as input floating */
   GPIO_InitStructure.GPIO_Pin = MPU9150_INT_PIN;
@@ -56,7 +56,7 @@ void MPU9150_Interrupt_Init(MPU9150int_TypeDef MPU9150int, MPU9150intMode_TypeDe
   }  
 }
 
-void MPU9150_Interrupt_Cmd(MPU9150int_TypeDef MPU9150int, FunctionalState NewState)
+void MPU9150_Interrupt_Cmd(FunctionalState NewState)
 {
   NVIC_InitTypeDef NVIC_InitStructure;
   

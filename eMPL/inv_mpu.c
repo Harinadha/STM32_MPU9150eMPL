@@ -805,7 +805,7 @@ int mpu_init(struct int_param_s *int_param)
 
     if (int_param)
     //    reg_int_cb(int_param);
-			MPU9150_Interrupt_Init(MPU9150_INT, MPU9150_INT_MODE_EXTI);
+			MPU9150_Interrupt_Init(MPU9150_INT_MODE_EXTI);
 #ifdef AK89xx_SECONDARY
     setup_compass();
     if (mpu_set_compass_sample_rate(10))

@@ -24,7 +24,7 @@
     <Windows>
       
       
-    <Wnd0>
+    <Wnd2>
         <Tabs>
           <Tab>
             <Identity>TabID-29747-15907</Identity>
@@ -36,7 +36,7 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
+      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
         <Tabs>
           <Tab>
             <Identity>TabID-21284-20141</Identity>
@@ -46,20 +46,20 @@
           </Tab>
         <Tab><Identity>TabID-29785-49</Identity><TabName>Debug Log</TabName><Factory>Debug-Log</Factory><Session/></Tab></Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd1></Windows>
+      <SelectedTab>0</SelectedTab></Wnd3></Windows>
     <Editor>
       
       
       
       
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Libraries\STM32_CPAL_Driver\inc\cpal_conf.h</Filename><XPos>0</XPos><YPos>87</YPos><SelStart>24621</SelStart><SelEnd>24621</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\eMPL\inv_mpu_dmp_motion_driver.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>1422</SelStart><SelEnd>1422</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\eMPL\inv_mpu.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>477</SelStart><SelEnd>477</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Application\src\stm32_CPAL_mpu9150.c</Filename><XPos>0</XPos><YPos>96</YPos><SelStart>1706</SelStart><SelEnd>1706</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\main.c</Filename><XPos>0</XPos><YPos>672</YPos><SelStart>24165</SelStart><SelEnd>24165</SelEnd></Tab><ActiveTab>4</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Libraries\STM32_CPAL_Driver\inc\cpal_conf.h</Filename><XPos>0</XPos><YPos>87</YPos><SelStart>24621</SelStart><SelEnd>24621</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\eMPL\inv_mpu_dmp_motion_driver.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>1422</SelStart><SelEnd>1422</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\eMPL\inv_mpu.c</Filename><XPos>0</XPos><YPos>792</YPos><SelStart>23210</SelStart><SelEnd>23210</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Application\src\stm32_CPAL_mpu9150.c</Filename><XPos>0</XPos><YPos>96</YPos><SelStart>1706</SelStart><SelEnd>1706</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\main.c</Filename><XPos>0</XPos><YPos>24</YPos><SelStart>1824</SelStart><SelEnd>1824</SelEnd></Tab><ActiveTab>4</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Application\src\mpu9150_interrupts.c</Filename><XPos>0</XPos><YPos>8</YPos><SelStart>1095</SelStart><SelEnd>1095</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Application\inc\mpu9150_interrupts.h</Filename><XPos>0</XPos><YPos>32</YPos><SelStart>1862</SelStart><SelEnd>1862</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
       
       
       
       
       
-    <Top><Row0><Sizes><Toolbar-02940998><key>iaridepm.enu1</key></Toolbar-02940998></Sizes></Row0></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>526</Bottom><Right>340</Right><x>-2</x><y>-2</y><xscreen>142</xscreen><yscreen>151</yscreen><sizeHorzCX>103953</sizeHorzCX><sizeHorzCY>207989</sizeHorzCY><sizeVertCX>250366</sizeVertCX><sizeVertCY>727273</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>155</Bottom><Right>1368</Right><x>-2</x><y>-2</y><xscreen>1370</xscreen><yscreen>157</yscreen><sizeHorzCX>1002928</sizeHorzCX><sizeHorzCY>216253</sizeHorzCY><sizeVertCX>103953</sizeVertCX><sizeVertCY>207989</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+    <Top><Row0><Sizes><Toolbar-01180998><key>iaridepm.enu1</key></Toolbar-01180998></Sizes></Row0></Top><Left><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>526</Bottom><Right>340</Right><x>-2</x><y>-2</y><xscreen>142</xscreen><yscreen>151</yscreen><sizeHorzCX>103953</sizeHorzCX><sizeHorzCY>207989</sizeHorzCY><sizeVertCX>250366</sizeVertCX><sizeVertCY>727273</sizeVertCY></Rect></Wnd2></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>155</Bottom><Right>1368</Right><x>-2</x><y>-2</y><xscreen>1370</xscreen><yscreen>157</yscreen><sizeHorzCX>1002928</sizeHorzCX><sizeHorzCY>216253</sizeHorzCY><sizeVertCX>103953</sizeVertCX><sizeVertCY>207989</sizeVertCY></Rect></Wnd3></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Workspace>
 

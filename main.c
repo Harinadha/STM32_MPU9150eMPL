@@ -32,7 +32,7 @@ THE SOFTWARE.
 #include "usb_pwr.h"
 #include "stm32_CPAL_mpu9150.h"
 #include "mpu9150_interrupts.h"
-//#include "utils.h"
+#include "utils.h"
 
 #include <string.h>
 #include "inv_mpu.h"
@@ -464,15 +464,15 @@ static void handle_input(void)
  * ISR context. In this example, it sets a flag protecting the FIFO read
  * function.
  */
-void EXTI15_10_IRQHandler(void) 
+void EXTI9_5_IRQHandler(void) 
 {  
-   if(EXTI_GetITStatus(EXTI_Line12))
+   if(EXTI_GetITStatus(EXTI_Line9))
    {             
      if(MPU9150_Get_INTpin_State())
      {
        hal.new_gyro = 1;
      }
-     EXTI_ClearITPendingBit(EXTI_Line12);        
+     EXTI_ClearITPendingBit(EXTI_Line9);        
    }   
 }
 /* Simple application code for testing MPU9150 with STM32F103xx family microcontrollers.
@@ -485,7 +485,7 @@ void Stm32MPU9150test(void)
     unsigned char accel_fsr;
     unsigned short gyro_rate, gyro_fsr;
     //unsigned long timestamp;
-    struct int_param_s int_param;
+    //struct int_param_s int_param;
     /**************************** Setup STM32 hardware ***********************/
     Set_System();
     Set_USBClock();
@@ -500,7 +500,7 @@ void Stm32MPU9150test(void)
       Virtual_Com_Write_Buffer("MPU9150-Status is fine", 22);  
     }
     /******** 2. Configure INT pin of STM32 for MPU9150 interrupts *********/
-    MPU9150_Interrupt_Init(MPU9150_INT, MPU9150_INT_MODE_EXTI);
+    MPU9150_Interrupt_Init(MPU9150_INT_MODE_EXTI);
     /* If you're not using an MPU9150 AND you're not using DMP features, this
      * function will place all slaves on the primary bus.
      * mpu_set_bypass(1);
@@ -564,7 +564,7 @@ void Stm32MPU9150test(void)
     t_err = mpu_set_dmp_state(1);
     hal.dmp_on = 1;
 		/************** 3. Enable the Interrupt now **************************/
-    MPU9150_Interrupt_Cmd(MPU9150_INT,ENABLE);
+    MPU9150_Interrupt_Cmd(ENABLE);
 		
     while (1) {
         unsigned long sensor_timestamp;
