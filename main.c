@@ -161,7 +161,7 @@ void send_packet(char packet_type, void *data)
         buf[5] = ((char*)data)[3];
         length = 6;
     }
-		Virtual_Com_Write_Buffer(buf, length);  
+    Virtual_Com_Write_Buffer(buf, length);  
 }
 
 /* These next two functions converts the orientation matrix (see
@@ -281,14 +281,14 @@ static void handle_input(void)
 
     /* Check the commands in the data received from USB*/
     rx_new = 0;
-		/* Check USB_Rx_Buffer for extracting commands.
-		 * It processes one character at a time. After constructing 
-		 * a full command consisting of 4 char's, it proceeds to execute
-		 * that command.
-		 */
-		c = USB_Rx_Buffer;			
-		if(count_out !=0)
-			rx_new = count_out;
+   /* Check USB_Rx_Buffer for extracting commands.
+    * It processes one character at a time. After constructing 
+    * a full command consisting of 4 char's, it proceeds to execute
+    * that command.
+    */
+    c = USB_Rx_Buffer;			
+    if(count_out !=0)
+      rx_new = count_out;
 		
     if (hal.rx.header[0] == header[0]) {
         if (hal.rx.header[1] == header[1]) {
@@ -444,7 +444,7 @@ static void handle_input(void)
         send_packet(PACKET_TYPE_PEDO, pedo_packet);
         break;
     case 'x':
-  			stm32_reset();
+        stm32_reset();
         break;
     case 'v':
         /* Toggle LP quaternion.
@@ -468,11 +468,11 @@ void EXTI15_10_IRQHandler(void)
 {  
    if(EXTI_GetITStatus(EXTI_Line12))
    {             
-		    if(MPU9150_Get_INTpin_State())
-        {
-					hal.new_gyro = 1;
-				}
-        EXTI_ClearITPendingBit(EXTI_Line12);        
+     if(MPU9150_Get_INTpin_State())
+     {
+       hal.new_gyro = 1;
+     }
+     EXTI_ClearITPendingBit(EXTI_Line12);        
    }   
 }
 /* Simple application code for testing MPU9150 with STM32F103xx family microcontrollers.
@@ -486,33 +486,32 @@ void Stm32MPU9150test(void)
     unsigned short gyro_rate, gyro_fsr;
     //unsigned long timestamp;
     struct int_param_s int_param;
-		/**************************** Setup STM32 hardware ***********************/
-	  Set_System();
-		Set_USBClock();
-		USB_Interrupts_Config();
-	  USB_Init();
-		//---------1. Initialize CPAL for I2C communication with MPU9150----------
-		Delay(993400);											 // USB configuration takes some time ( useful in case USB not present)
-		//while(bDeviceState != CONFIGURED); // If USB present, Wait until USB is configured
-		MPU9150_Config();
-		if(MPU9150_GetStatus() == SUCCESS)
-		{
-			Virtual_Com_Write_Buffer("MPU9150-Status is fine", 22);  
-		}
-		//---------2. Configure INT pin of STM32 for MPU9150 interrupts ----------
-		MPU9150_Interrupt_Init(MPU9150_INT, MPU9150_INT_MODE_EXTI);
-		/* If you're not using an MPU9150 AND you're not using DMP features, this
+    /**************************** Setup STM32 hardware ***********************/
+    Set_System();
+    Set_USBClock();
+    USB_Interrupts_Config();
+    USB_Init();
+    /************ 1. Initialize CPAL for I2C communication with MPU9150 *****/
+    Delay(993400); // USB configuration takes some time ( useful in case USB not present)
+    //while(bDeviceState != CONFIGURED); // If USB present, Wait until USB is configured
+    MPU9150_Config();
+    if(MPU9150_GetStatus() == SUCCESS)
+    {
+      Virtual_Com_Write_Buffer("MPU9150-Status is fine", 22);  
+    }
+    /******** 2. Configure INT pin of STM32 for MPU9150 interrupts *********/
+    MPU9150_Interrupt_Init(MPU9150_INT, MPU9150_INT_MODE_EXTI);
+    /* If you're not using an MPU9150 AND you're not using DMP features, this
      * function will place all slaves on the primary bus.
      * mpu_set_bypass(1);
      */
-
     /* Get/set hardware configuration. Start gyro. */
     /* Wake up all sensors. */
     int t_err = mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL);
     /* Push both gyro and accel data into the FIFO. */
     t_err = mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL);
     t_err = mpu_set_sample_rate(DEFAULT_MPU_HZ);
-		t_err = mpu_set_gyro_fsr(2000);
+    t_err = mpu_set_gyro_fsr(2000);
     /* Read back configuration in case it was set improperly. */
     t_err = mpu_get_sample_rate(&gyro_rate);
     t_err = mpu_get_gyro_fsr(&gyro_fsr);
@@ -564,18 +563,18 @@ void Stm32MPU9150test(void)
     t_err = dmp_set_fifo_rate(DEFAULT_MPU_HZ);
     t_err = mpu_set_dmp_state(1);
     hal.dmp_on = 1;
-		//--------------- 3. Enable the Interrupt now --------------
-		MPU9150_Interrupt_Cmd(MPU9150_INT,ENABLE);
+		/************** 3. Enable the Interrupt now **************************/
+    MPU9150_Interrupt_Cmd(MPU9150_INT,ENABLE);
 		
-		while (1) {
+    while (1) {
         unsigned long sensor_timestamp;
         if (count_out != 0)
             /* A byte has been received via USB. See handle_input for a list of
              * valid commands.
              */
-				{   handle_input();
-				   		// by hari
-						count_out = 0;
+        {   
+            handle_input();				   		
+            count_out = 0; // received data has been processed
 				}
 
         if (hal.motion_int_mode) {
@@ -656,20 +655,20 @@ void Stm32MPU9150test(void)
 
 void SimpleUSBvirtualCOMtest()
 {
-	Set_System();
-	Set_USBClock();
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
-	USB_Interrupts_Config();
-	USB_Init();
-	while(bDeviceState != CONFIGURED); // wait until USB is configured	
-  while (1)
-  { 
-		if(count_out)
-		{
-			Virtual_Com_Write_Buffer(&USB_Rx_Buffer, count_out);  // Just send whatever received on USB
-			count_out = 0;
-		}
-  }
+   Set_System();
+   Set_USBClock(); 
+   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
+   USB_Interrupts_Config();
+   USB_Init();
+   while(bDeviceState != CONFIGURED); // wait until USB is configured	
+   while (1)
+   { 
+    if(count_out)
+    {
+      Virtual_Com_Write_Buffer(&USB_Rx_Buffer, count_out);  // Just send whatever received on USB
+      count_out = 0;
+    }
+   }
 }
 /*******************************************************************************
 * Function Name  : main.
@@ -680,8 +679,8 @@ void SimpleUSBvirtualCOMtest()
 *******************************************************************************/
 int main()
 {
-	//SimpleUSBvirtualCOMtest();
-	Stm32MPU9150test();
+  //SimpleUSBvirtualCOMtest();
+  Stm32MPU9150test();
   return 0;
 }
 
