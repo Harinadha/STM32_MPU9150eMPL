@@ -64,7 +64,7 @@
           
           
           
-        <item>cur</item><item>dmp_memory</item><item></item></expressions>
+        <item>cur</item><item>dmp_memory</item><item/></expressions>
         <col-names>
           
           

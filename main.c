@@ -487,7 +487,7 @@ void EXTI9_5_IRQHandler(void)
 /* Sample application code for testing MPU9150 with STM32F103xx family microcontrollers.
  * It initializes Clock system, USB, I2C & MPU9150. Listens to the data received on USB,
  * constructs commands & executes them.
- * You can obtain Accelerometer, Gyro, 6-Axes DMP quaternion data, Pedometer count, TAP, 
+ * You can obtain Accelerometer, Gyro, 6-Axes DMP quaternion, Pedometer count, TAP, 
  * Android_Orientation & other data.
  */
 void Stm32MPU9150noCompass_test(void)
@@ -666,7 +666,7 @@ void Stm32MPU9150noCompass_test(void)
 /* Sample application code for testing MPU9150 with STM32F103xx family microcontrollers.
  * It initializes Clock system, USB, I2C & MPU9150. Listens to the data received on USB,
  * constructs commands & executes them.
- * You can obtain Accelerometer, Gyro, Magnetometer data, 6-Axes DMP quaternion data, 
+ * You can obtain Accelerometer, Gyro, Magnetometer, 6-Axes DMP quaternion, 
  * Pedometer count, TAP, Android_Orientation & other data.
  */
 void Stm32MPU9150compass_test(void)
@@ -696,13 +696,13 @@ void Stm32MPU9150compass_test(void)
     int_param.active_low = 1;
     // "int_param" structure is doing nothing here, just statisfying calling convention
     result = mpu_init(&int_param); 
-		result = mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL | INV_XYZ_COMPASS);   
+    result = mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL | INV_XYZ_COMPASS);   
     result = mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL);   
-		result = dmp_load_motion_driver_firmware();// load the DMP firmware
-		result = dmp_set_orientation(inv_orientation_matrix_to_scalar(gyro_orientation));
+    result = dmp_load_motion_driver_firmware();// load the DMP firmware
+    result = dmp_set_orientation(inv_orientation_matrix_to_scalar(gyro_orientation));
     result = dmp_register_tap_cb(tap_cb);
     result = dmp_register_android_orient_cb(android_orient_cb);
-		hal.dmp_features = DMP_FEATURE_6X_LP_QUAT | DMP_FEATURE_TAP |
+    hal.dmp_features = DMP_FEATURE_6X_LP_QUAT | DMP_FEATURE_TAP |
         DMP_FEATURE_ANDROID_ORIENT | DMP_FEATURE_SEND_RAW_ACCEL | DMP_FEATURE_SEND_CAL_GYRO |
         DMP_FEATURE_GYRO_CAL;
     result = dmp_enable_feature(hal.dmp_features);
@@ -715,19 +715,19 @@ void Stm32MPU9150compass_test(void)
     result = mpu_set_sample_rate(DEFAULT_MPU_HZ);
     mpu_set_compass_sample_rate(100);       // set the compass update rate to match
     /************** 3. Enable the Interrupt now **************************/
-		MPU9150_Interrupt_Cmd(ENABLE);
+    MPU9150_Interrupt_Cmd(ENABLE);
     hal.dmp_on = 1;
 		
-		while (1) 
-		{
+    while (1) 
+    {
         unsigned long sensor_timestamp;
         if (count_out != 0)
-				{    /* A byte has been received via USB. See handle_input for a list of
+        {    /* A byte has been received via USB. See handle_input for a list of
              * valid commands.
              */  
-					handle_input();
-					count_out = 0;
-				}
+          handle_input();
+          count_out = 0;
+        }
         //msp430_get_clock_ms(&timestamp);
 
         if (hal.motion_int_mode) {
@@ -736,20 +736,7 @@ void Stm32MPU9150compass_test(void)
             hal.new_gyro = 0;
             /* Wait for the MPU interrupt. */
             while (!hal.new_gyro){
-                //__bis_SR_register(LPM0_bits + GIE);
-							//There are bits within the SR that allows to configure the chip into its Low Power Modes and there is the General Interrupt Enable (GIE) bit.
-							//So if you want to change either the LPM mode or set/clear the GIE bit you use an intrinsic function of the C compiler - that's the __bis_SR_register() function.
-							//In the main loop you use:
-							//__bis_SR_register(LPM0_bits + GIE);        // enter LPM0 with interrrupt enable 
-							//This causes that all maskable interrupt are allows (GIE=1) and the chip is switched into LPM0 mode (no further code execution untill an interrupt wakes up the chip again).
-							//In the interrupt service routine you used:
-							//		__bis_SR_register_on_exit(LPM0_bits);							
-							//This intrinsic function manipulates the SR that is stored on Stack. Asap the interrupt service routine is finished this content is poped back to SR. So manipulating the value with the  ..._on_exti() function allows to define a different LPM mode in the main loop.
-							//And here is the problem within your code... You are using __bis_SR_register_on_exit()... "bis" means that the bits will be set. However, you would like to clear the bits and by this switch the controll into active mode when it leaves the ISR and jumps back into main loop.
-							//So use the following intrinsic function in your interrupt service routine (the "bic" takes care that the bits mentioned in the bracket will be cleared):							
-							//__bic_SR_register_on_exit(LPM0_bits);
-							
-							
+                //Write code for Low Power Mode (LPM)
 						}
             /* Restore the previous sensor configuration. */
             mpu_lp_motion_interrupt(0, 0, 0);
@@ -815,15 +802,15 @@ void Stm32MPU9150compass_test(void)
              * there are leftover packets in the FIFO.
              */
             mpu_read_fifo(gyro, accel, &sensor_timestamp, &sensors, &more);
-						if ( hal.report & PRINT_COMPASS)
-						mpu_get_compass_reg(compass,&sensor_timestamp); // get the compass data
+            if ( hal.report & PRINT_COMPASS)
+               mpu_get_compass_reg(compass,&sensor_timestamp); // get the compass data
             if (!more)
                 hal.new_gyro = 0;
             if (sensors & INV_XYZ_GYRO && hal.report & PRINT_GYRO)
                 send_packet(PACKET_TYPE_GYRO, gyro);
             if (sensors & INV_XYZ_ACCEL && hal.report & PRINT_ACCEL)
                 send_packet(PACKET_TYPE_ACCEL, accel);
-						if (hal.report & PRINT_COMPASS)
+            if (hal.report & PRINT_COMPASS)
                 send_packet(PACKET_TYPE_COMPASS, compass);						
         }
     }
