@@ -737,17 +737,16 @@ void Stm32MPU9150compass_test(void)
             /* Wait for the MPU interrupt. */
             while (!hal.new_gyro){
                 //Write code for Low Power Mode (LPM)
-						}
+            }
             /* Restore the previous sensor configuration. */
             mpu_lp_motion_interrupt(0, 0, 0);
             hal.motion_int_mode = 0;
         }
 
         if (!hal.sensors || !hal.new_gyro) {
-            /* Put the MSP430 to sleep until a timer interrupt or data ready
+            /* Put the stm32 to sleep until a timer interrupt or data ready
              * interrupt is detected.
              */
-            //__bis_SR_register(LPM0_bits + GIE);
             //continue;
         }
 
@@ -770,8 +769,8 @@ void Stm32MPU9150compass_test(void)
              */
             dmp_read_fifo(gyro, accel, quat, &sensor_timestamp, &sensors,
                 &more);
-						//if ( hal.report & PRINT_COMPASS)
-						//mpu_get_compass_reg(compass,&sensor_timestamp);
+            //if ( hal.report & PRINT_COMPASS)
+            //  mpu_get_compass_reg(compass,&sensor_timestamp);
             if (!more)
                 hal.new_gyro = 0;
             /* Gyro and accel data are written to the FIFO by the DMP in chip
@@ -783,8 +782,8 @@ void Stm32MPU9150compass_test(void)
                 send_packet(PACKET_TYPE_GYRO, gyro);
             if (sensors & INV_XYZ_ACCEL && hal.report & PRINT_ACCEL)
                 send_packet(PACKET_TYPE_ACCEL, accel);
-						//if ( hal.report & PRINT_COMPASS)
-						//		send_packet(PACKET_TYPE_COMPASS, compass);
+            //if ( hal.report & PRINT_COMPASS)
+            //		send_packet(PACKET_TYPE_COMPASS, compass);
             /* Unlike gyro and accel, quaternions are written to the FIFO in
              * the body frame, q30. The orientation is set by the scalar passed
              * to dmp_set_orientation during initialization.
@@ -847,7 +846,7 @@ int main()
 {
   //SimpleUSBvirtualCOMtest();
   //Stm32MPU9150noCompass_test();
-	Stm32MPU9150compass_test();
+  Stm32MPU9150compass_test();
   return 0;
 }
 
