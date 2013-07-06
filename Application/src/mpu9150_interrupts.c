@@ -2,7 +2,8 @@
 //Has functions for configuring MPU9150/MPU6050 INT pin.
 // 25/06/2013 by Harinadha Reddy Chintalapalli <harinath.ec@gmail.com>
 // Changelog:
-//     2013-06-25 - Initial release. Thanks to Invensense for releasing MPU driver for msp430.
+//     2013-07-06 - A bug in interrupts configuration fixed.
+//     2013-06-25 - Initial release.
 /* ============================================================================================
 MPU9150 device I2C library code for ARM STM32F103xx is placed under the MIT license
 Copyright (c) 2013 Harinadha Reddy Chintalapalli

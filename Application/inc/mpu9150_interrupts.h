@@ -1,8 +1,9 @@
-//MPU9150 I2C library for ARM STM32F103xx Microcontrollers - Header file has defines
-// to choose MPU9150/MPU6050 INT pin. 
+//MPU9150 I2C library for ARM STM32F103xx Microcontrollers - Header file 
+// has defines to choose MPU9150/MPU6050 INT pin. 
 // 25/06/2013 by Harinadha Reddy Chintalapalli <harinath.ec@gmail.com>
 // Changelog:
-//     2013-06-25 - Initial release.
+//     2013-07-06 - Interrupts configuration changed to pin PC9 .
+//     2013-06-25 - Initial release. 
 /* ============================================================================================
 MPU9150 device I2C library code for ARM STM32F103xx is placed under the MIT license
 Copyright (c) 2013 Harinadha Reddy Chintalapalli

@@ -18,3 +18,5 @@ SDA ------------- SDA ( I2C2 )
 INT ------------- PC9
 
 You may find the pre-compiled binary file (STM32_MPU9150eMPL.hex) in the Debug/Exe folder in case if you want to FLASH the program directly on to your board ( In this case, make sure your micro is STM32F103RB & all the connections are same as here).Documentation will be available in near future using Doxygen-style comments placed in each definition file. This documentation will be available in HTML format on the http://harinadha.wordpress.com website, which also holds additional helpful information.
+
+Sample application code provides Accelerometer, Gyro,Magnetometer, 6-Axes DMP quaternion, Pedometer count, TAP, Android_Orientation & other data.

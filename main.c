@@ -1,7 +1,11 @@
 //MPU9150 I2C library test code for ARM STM32F103xx Microcontrollers 
 // 25/06/2013 by Harinadha Reddy Chintalapalli <harinath.ec@gmail.com>
 // Changelog:
-//     2013-06-25 - Initial release. Thanks to Invensense for releasing MPU driver test code for msp430.
+//     2013-07-06 - Configuration of MPU9150 to populate Compass data into FIFO
+//                  is working. Function "setup_compass(void) in inv_mpu.c updated.
+//                  Now the test code can also send Compass data packet.
+//     2013-06-25 - Initial release. Thanks to Invensense for releasing MPU 
+//                  driver test code for msp430.
 /* ============================================================================================
 MPU9150 device I2C library code for ARM STM32F103xx is placed under the MIT license
 Copyright (c) 2013 Harinadha Reddy Chintalapalli
@@ -45,6 +49,7 @@ extern uint8_t USB_Rx_Buffer;
 #define PRINT_ACCEL     (0x01)
 #define PRINT_GYRO      (0x02)
 #define PRINT_QUAT      (0x04)
+#define PRINT_COMPASS   (0x08)
 
 #define ACCEL_ON        (0x01)
 #define GYRO_ON         (0x02)
@@ -90,7 +95,8 @@ enum packet_type_e {
     PACKET_TYPE_TAP,
     PACKET_TYPE_ANDROID_ORIENT,
     PACKET_TYPE_PEDO,
-    PACKET_TYPE_MISC
+    PACKET_TYPE_MISC,
+    PACKET_TYPE_COMPASS,
 };
 
 /* Send data to the Python client application.
@@ -108,7 +114,7 @@ void send_packet(char packet_type, void *data)
     buf[0] = '$';
     buf[1] = packet_type;
 
-    if (packet_type == PACKET_TYPE_ACCEL || packet_type == PACKET_TYPE_GYRO) {
+    if (packet_type == PACKET_TYPE_ACCEL || packet_type == PACKET_TYPE_GYRO || packet_type == PACKET_TYPE_COMPASS) {
         short *sdata = (short*)data;
         buf[2] = (char)(sdata[0] >> 8);
         buf[3] = (char)sdata[0];
@@ -336,6 +342,9 @@ static void handle_input(void)
     case 'q':
         hal.report ^= PRINT_QUAT;
         break;
+    case 'c':
+        hal.report ^= PRINT_COMPASS;
+        break;
     /* The hardware self test can be run without any interaction with the
      * MPL since it's completely localized in the gyro driver. Logging is
      * assumed to be enabled; otherwise, a couple LEDs could probably be used
@@ -475,18 +484,20 @@ void EXTI9_5_IRQHandler(void)
      EXTI_ClearITPendingBit(EXTI_Line9);        
    }   
 }
-/* Simple application code for testing MPU9150 with STM32F103xx family microcontrollers.
- * It initializes Clock system, USB, I2C & MPU9150. Listens to the data received on Virtual
- * COM port, constructs commands & executes them.
+/* Sample application code for testing MPU9150 with STM32F103xx family microcontrollers.
+ * It initializes Clock system, USB, I2C & MPU9150. Listens to the data received on USB,
+ * constructs commands & executes them.
+ * You can obtain Accelerometer, Gyro, 6-Axes DMP quaternion data, Pedometer count, TAP, 
+ * Android_Orientation & other data.
  */
-void Stm32MPU9150test(void)
+void Stm32MPU9150noCompass_test(void)
 {
     int result;
     unsigned char accel_fsr;
     unsigned short gyro_rate, gyro_fsr;
     //unsigned long timestamp;
     //struct int_param_s int_param;
-    /**************************** Setup STM32 hardware ***********************/
+    /**************************** Setup STM32 hardware **********************/
     Set_System();
     Set_USBClock();
     USB_Interrupts_Config();
@@ -507,15 +518,15 @@ void Stm32MPU9150test(void)
      */
     /* Get/set hardware configuration. Start gyro. */
     /* Wake up all sensors. */
-    int t_err = mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL);
+    result = mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL);
     /* Push both gyro and accel data into the FIFO. */
-    t_err = mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL);
-    t_err = mpu_set_sample_rate(DEFAULT_MPU_HZ);
-    t_err = mpu_set_gyro_fsr(2000);
+    result = mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL);
+    result = mpu_set_sample_rate(DEFAULT_MPU_HZ);
+    result = mpu_set_gyro_fsr(2000);
     /* Read back configuration in case it was set improperly. */
-    t_err = mpu_get_sample_rate(&gyro_rate);
-    t_err = mpu_get_gyro_fsr(&gyro_fsr);
-    t_err = mpu_get_accel_fsr(&accel_fsr);
+    result = mpu_get_sample_rate(&gyro_rate);
+    result = mpu_get_gyro_fsr(&gyro_fsr);
+    result = mpu_get_accel_fsr(&accel_fsr);
 
     /* Initialize HAL state variables. */
     memset(&hal, 0, sizeof(hal));
@@ -552,16 +563,16 @@ void Stm32MPU9150test(void)
      * DMP_FEATURE_SEND_CAL_GYRO: Add calibrated gyro data to the FIFO. Cannot
      * be used in combination with DMP_FEATURE_SEND_RAW_GYRO.
      */
-    t_err = dmp_load_motion_driver_firmware();
-    t_err = dmp_set_orientation(inv_orientation_matrix_to_scalar(gyro_orientation));
-    t_err = dmp_register_tap_cb(tap_cb);
-    t_err = dmp_register_android_orient_cb(android_orient_cb);
+    result = dmp_load_motion_driver_firmware();
+    result = dmp_set_orientation(inv_orientation_matrix_to_scalar(gyro_orientation));
+    result = dmp_register_tap_cb(tap_cb);
+    result = dmp_register_android_orient_cb(android_orient_cb);
     hal.dmp_features = DMP_FEATURE_6X_LP_QUAT | DMP_FEATURE_TAP |
         DMP_FEATURE_ANDROID_ORIENT | DMP_FEATURE_SEND_RAW_ACCEL | DMP_FEATURE_SEND_CAL_GYRO |
         DMP_FEATURE_GYRO_CAL;
-    t_err = dmp_enable_feature(hal.dmp_features);
-    t_err = dmp_set_fifo_rate(DEFAULT_MPU_HZ);
-    t_err = mpu_set_dmp_state(1);
+    result = dmp_enable_feature(hal.dmp_features);
+    result = dmp_set_fifo_rate(DEFAULT_MPU_HZ);
+    result = mpu_set_dmp_state(1);
     hal.dmp_on = 1;
 		/************** 3. Enable the Interrupt now **************************/
     MPU9150_Interrupt_Cmd(ENABLE);
@@ -652,7 +663,175 @@ void Stm32MPU9150test(void)
         }
     }
 }
+/* Sample application code for testing MPU9150 with STM32F103xx family microcontrollers.
+ * It initializes Clock system, USB, I2C & MPU9150. Listens to the data received on USB,
+ * constructs commands & executes them.
+ * You can obtain Accelerometer, Gyro, Magnetometer data, 6-Axes DMP quaternion data, 
+ * Pedometer count, TAP, Android_Orientation & other data.
+ */
+void Stm32MPU9150compass_test(void)
+{
+    int result;
+    struct int_param_s int_param;
+    /**************************** Setup STM32 hardware **********************/
+    Set_System();
+    Set_USBClock();
+    USB_Interrupts_Config();
+    USB_Init();
+    /************ 1. Initialize CPAL for I2C communication with MPU9150 *****/
+    Delay(993400); // USB configuration takes some time ( useful in case USB not present)
+    //while(bDeviceState != CONFIGURED); // If USB present, Wait until USB is configured
+    MPU9150_Config();
+    if(MPU9150_GetStatus() == SUCCESS)
+    {
+      Virtual_Com_Write_Buffer("MPU9150-Status is fine", 22);  
+    }
+    /******** 2. Configure INT pin of STM32 for MPU9150 interrupts *********/
+    // This time it is done inside mpu_init (inv_mpu.c)
+    // MPU9150_Interrupt_Init(MPU9150_INT, MPU9150_INT_MODE_EXTI);
+		
+    int_param.cb = NULL;
+    int_param.pin = 0;
+    int_param.lp_exit = 0;
+    int_param.active_low = 1;
+    // "int_param" structure is doing nothing here, just statisfying calling convention
+    result = mpu_init(&int_param); 
+		result = mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL | INV_XYZ_COMPASS);   
+    result = mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL);   
+		result = dmp_load_motion_driver_firmware();// load the DMP firmware
+		result = dmp_set_orientation(inv_orientation_matrix_to_scalar(gyro_orientation));
+    result = dmp_register_tap_cb(tap_cb);
+    result = dmp_register_android_orient_cb(android_orient_cb);
+		hal.dmp_features = DMP_FEATURE_6X_LP_QUAT | DMP_FEATURE_TAP |
+        DMP_FEATURE_ANDROID_ORIENT | DMP_FEATURE_SEND_RAW_ACCEL | DMP_FEATURE_SEND_CAL_GYRO |
+        DMP_FEATURE_GYRO_CAL;
+    result = dmp_enable_feature(hal.dmp_features);
+    result = dmp_set_fifo_rate(DEFAULT_MPU_HZ);
+    result = mpu_set_dmp_state(1);
+		/* Initialize HAL state variables. */
+    memset(&hal, 0, sizeof(hal));
+    hal.sensors = ACCEL_ON | GYRO_ON;
+    hal.report = PRINT_QUAT;
+    result = mpu_set_sample_rate(DEFAULT_MPU_HZ);
+    mpu_set_compass_sample_rate(100);       // set the compass update rate to match
+    /************** 3. Enable the Interrupt now **************************/
+		MPU9150_Interrupt_Cmd(ENABLE);
+    hal.dmp_on = 1;
+		
+		while (1) 
+		{
+        unsigned long sensor_timestamp;
+        if (count_out != 0)
+				{    /* A byte has been received via USB. See handle_input for a list of
+             * valid commands.
+             */  
+					handle_input();
+					count_out = 0;
+				}
+        //msp430_get_clock_ms(&timestamp);
 
+        if (hal.motion_int_mode) {
+            /* Enable motion interrupt. */
+            mpu_lp_motion_interrupt(500, 1, 5);
+            hal.new_gyro = 0;
+            /* Wait for the MPU interrupt. */
+            while (!hal.new_gyro){
+                //__bis_SR_register(LPM0_bits + GIE);
+							//There are bits within the SR that allows to configure the chip into its Low Power Modes and there is the General Interrupt Enable (GIE) bit.
+							//So if you want to change either the LPM mode or set/clear the GIE bit you use an intrinsic function of the C compiler - that's the __bis_SR_register() function.
+							//In the main loop you use:
+							//__bis_SR_register(LPM0_bits + GIE);        // enter LPM0 with interrrupt enable 
+							//This causes that all maskable interrupt are allows (GIE=1) and the chip is switched into LPM0 mode (no further code execution untill an interrupt wakes up the chip again).
+							//In the interrupt service routine you used:
+							//		__bis_SR_register_on_exit(LPM0_bits);							
+							//This intrinsic function manipulates the SR that is stored on Stack. Asap the interrupt service routine is finished this content is poped back to SR. So manipulating the value with the  ..._on_exti() function allows to define a different LPM mode in the main loop.
+							//And here is the problem within your code... You are using __bis_SR_register_on_exit()... "bis" means that the bits will be set. However, you would like to clear the bits and by this switch the controll into active mode when it leaves the ISR and jumps back into main loop.
+							//So use the following intrinsic function in your interrupt service routine (the "bic" takes care that the bits mentioned in the bracket will be cleared):							
+							//__bic_SR_register_on_exit(LPM0_bits);
+							
+							
+						}
+            /* Restore the previous sensor configuration. */
+            mpu_lp_motion_interrupt(0, 0, 0);
+            hal.motion_int_mode = 0;
+        }
+
+        if (!hal.sensors || !hal.new_gyro) {
+            /* Put the MSP430 to sleep until a timer interrupt or data ready
+             * interrupt is detected.
+             */
+            //__bis_SR_register(LPM0_bits + GIE);
+            //continue;
+        }
+
+        if (hal.new_gyro && hal.dmp_on) {
+            short gyro[3], accel[3], sensors;
+            //short compass[3];
+            unsigned char more;
+            long quat[4];
+            /* This function gets new data from the FIFO when the DMP is in
+             * use. The FIFO can contain any combination of gyro, accel,
+             * quaternion, and gesture data. The sensors parameter tells the
+             * caller which data fields were actually populated with new data.
+             * For example, if sensors == (INV_XYZ_GYRO | INV_WXYZ_QUAT), then
+             * the FIFO isn't being filled with accel data.
+             * The driver parses the gesture data to determine if a gesture
+             * event has occurred; on an event, the application will be notified
+             * via a callback (assuming that a callback function was properly
+             * registered). The more parameter is non-zero if there are
+             * leftover packets in the FIFO.
+             */
+            dmp_read_fifo(gyro, accel, quat, &sensor_timestamp, &sensors,
+                &more);
+						//if ( hal.report & PRINT_COMPASS)
+						//mpu_get_compass_reg(compass,&sensor_timestamp);
+            if (!more)
+                hal.new_gyro = 0;
+            /* Gyro and accel data are written to the FIFO by the DMP in chip
+             * frame and hardware units. This behavior is convenient because it
+             * keeps the gyro and accel outputs of dmp_read_fifo and
+             * mpu_read_fifo consistent.
+             */
+            if (sensors & INV_XYZ_GYRO && hal.report & PRINT_GYRO)
+                send_packet(PACKET_TYPE_GYRO, gyro);
+            if (sensors & INV_XYZ_ACCEL && hal.report & PRINT_ACCEL)
+                send_packet(PACKET_TYPE_ACCEL, accel);
+						//if ( hal.report & PRINT_COMPASS)
+						//		send_packet(PACKET_TYPE_COMPASS, compass);
+            /* Unlike gyro and accel, quaternions are written to the FIFO in
+             * the body frame, q30. The orientation is set by the scalar passed
+             * to dmp_set_orientation during initialization.
+             */
+            if (sensors & INV_WXYZ_QUAT && hal.report & PRINT_QUAT)
+                send_packet(PACKET_TYPE_QUAT, quat);
+        } else if (hal.new_gyro) {
+            short gyro[3], accel[3], compass[3];
+            unsigned char sensors, more;
+            /* This function gets new data from the FIFO. The FIFO can contain
+             * gyro, accel, both, or neither. The sensors parameter tells the
+             * caller which data fields were actually populated with new data.
+             * For example, if sensors == INV_XYZ_GYRO, then the FIFO isn't
+             * being filled with accel data. The more parameter is non-zero if
+             * there are leftover packets in the FIFO.
+             */
+            mpu_read_fifo(gyro, accel, &sensor_timestamp, &sensors, &more);
+						if ( hal.report & PRINT_COMPASS)
+						mpu_get_compass_reg(compass,&sensor_timestamp); // get the compass data
+            if (!more)
+                hal.new_gyro = 0;
+            if (sensors & INV_XYZ_GYRO && hal.report & PRINT_GYRO)
+                send_packet(PACKET_TYPE_GYRO, gyro);
+            if (sensors & INV_XYZ_ACCEL && hal.report & PRINT_ACCEL)
+                send_packet(PACKET_TYPE_ACCEL, accel);
+						if (hal.report & PRINT_COMPASS)
+                send_packet(PACKET_TYPE_COMPASS, compass);						
+        }
+    }
+}
+/* Simple application code for testing Virtual COM port on STM32F103xx family microcontrollers.
+ * It initializes Clock system, USB & virtual COM port. Listens to the data received on USB &
+ * sends the same data back ( Software loopback).
+ */
 void SimpleUSBvirtualCOMtest()
 {
    Set_System();
@@ -680,7 +859,8 @@ void SimpleUSBvirtualCOMtest()
 int main()
 {
   //SimpleUSBvirtualCOMtest();
-  Stm32MPU9150test();
+  //Stm32MPU9150noCompass_test();
+	Stm32MPU9150compass_test();
   return 0;
 }
 

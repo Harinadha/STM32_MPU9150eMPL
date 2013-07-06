@@ -2381,20 +2381,27 @@ static int setup_compass(void)
     mpu_set_bypass(1);
 
     /* Find compass. Possible addresses range from 0x0C to 0x0F. */
-    for (akm_addr = 0x0C; akm_addr <= 0x0F; akm_addr++) {
+    /********************   Modified portion    **********************/
+    /* STM32 I2C library need 8-bit address of the device to communicate. 
+     * Hence the addresses shifted 1-bit left. 
+     */
+    for (akm_addr = (0x0C)<<1; akm_addr <= (0x0F)<<1; akm_addr++) {
         int result;
         result = i2c_read(akm_addr, AKM_REG_WHOAMI, 1, data);
         if (!result && (data[0] == AKM_WHOAMI))
             break;
     }
 
-    if (akm_addr > 0x0F) {
+    if (akm_addr > (0x0F)<<1) {
         /* TODO: Handle this case in all compass-related functions. */
         //log_e("Compass not found.\n");
         return -1;
     }
-
-    st.chip_cfg.compass_addr = akm_addr;
+    /* We are configuring MPU9150 to handle data of its friend AK8975 into FIFO, 
+     * MPU9150 needs his friend 7-bit address. Hence we are shifting back 1-bit right.
+     */
+    st.chip_cfg.compass_addr = akm_addr>>1;
+    /*******************************************************************/
 
     data[0] = AKM_POWER_DOWN;
     if (i2c_write(st.chip_cfg.compass_addr, AKM_REG_CNTL, 1, data))
