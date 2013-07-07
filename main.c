@@ -770,7 +770,7 @@ void Stm32MPU9150compass_test(void)
             dmp_read_fifo(gyro, accel, quat, &sensor_timestamp, &sensors,
                 &more);
             //if ( hal.report & PRINT_COMPASS)
-            //  mpu_get_compass_reg(compass,&sensor_timestamp);
+            mpu_get_compass_reg(compass,&sensor_timestamp);
             if (!more)
                 hal.new_gyro = 0;
             /* Gyro and accel data are written to the FIFO by the DMP in chip
@@ -782,8 +782,8 @@ void Stm32MPU9150compass_test(void)
                 send_packet(PACKET_TYPE_GYRO, gyro);
             if (sensors & INV_XYZ_ACCEL && hal.report & PRINT_ACCEL)
                 send_packet(PACKET_TYPE_ACCEL, accel);
-            //if ( hal.report & PRINT_COMPASS)
-            //		send_packet(PACKET_TYPE_COMPASS, compass);
+            if ( hal.report & PRINT_COMPASS)
+            		send_packet(PACKET_TYPE_COMPASS, compass);
             /* Unlike gyro and accel, quaternions are written to the FIFO in
              * the body frame, q30. The orientation is set by the scalar passed
              * to dmp_set_orientation during initialization.
