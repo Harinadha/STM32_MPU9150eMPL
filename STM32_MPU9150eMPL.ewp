@@ -306,6 +306,7 @@
           <state>$PROJ_DIR$\..\STM32_MPU9150eMPL\Libraries\STM32_CPAL_Driver\devices\STM32F10x</state>
           <state>$PROJ_DIR$\..\STM32_MPU9150eMPL\Application\inc</state>
           <state>$PROJ_DIR$\..\STM32_MPU9150eMPL\eMPL</state>
+          <state>$PROJ_DIR$\..\STM32_MPU9150eMPL\VirtualCOMport\inc</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -1828,36 +1829,6 @@
   </configuration>
   <group>
     <name>Application</name>
-    <group>
-      <name>eMPL</name>
-      <file>
-        <name>$PROJ_DIR$\eMPL\inv_mpu.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\eMPL\inv_mpu_dmp_motion_driver.c</name>
-      </file>
-    </group>
-    <group>
-      <name>VirtualCOMport</name>
-      <file>
-        <name>$PROJ_DIR$\Application\src\hw_config.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\Application\src\usb_desc.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\Application\src\usb_endp.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\Application\src\usb_istr.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\Application\src\usb_prop.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\Application\src\usb_pwr.c</name>
-      </file>
-    </group>
     <file>
       <name>$PROJ_DIR$\main.c</name>
     </file>
@@ -1872,6 +1843,15 @@
     </file>
     <file>
       <name>$PROJ_DIR$\Application\src\utils.c</name>
+    </file>
+  </group>
+  <group>
+    <name>eMPL</name>
+    <file>
+      <name>$PROJ_DIR$\eMPL\inv_mpu.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\eMPL\inv_mpu_dmp_motion_driver.c</name>
     </file>
   </group>
   <group>
@@ -2008,6 +1988,27 @@
         <name>$PROJ_DIR$\Libraries\STM32_USB-FS-Device_Driver\src\usb_sil.c</name>
       </file>
     </group>
+  </group>
+  <group>
+    <name>VirtualCOMport</name>
+    <file>
+      <name>$PROJ_DIR$\VirtualCOMport\src\hw_config.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\VirtualCOMport\src\usb_desc.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\VirtualCOMport\src\usb_endp.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\VirtualCOMport\src\usb_istr.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\VirtualCOMport\src\usb_prop.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\VirtualCOMport\src\usb_pwr.c</name>
+    </file>
   </group>
   <file>
     <name>$PROJ_DIR$\README.txt</name>

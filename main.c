@@ -752,7 +752,7 @@ void Stm32MPU9150compass_test(void)
 
         if (hal.new_gyro && hal.dmp_on) {
             short gyro[3], accel[3], sensors;
-            //short compass[3];
+            short compass[3];
             unsigned char more;
             long quat[4];
             /* This function gets new data from the FIFO when the DMP is in

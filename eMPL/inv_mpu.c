@@ -2397,9 +2397,8 @@ static int setup_compass(void)
         //log_e("Compass not found.\n");
         return -1;
     }
-    /* We are configuring MPU9150 to populate data of its friend AK8975 into FIFO. 
-     * So, MPU9150 talks to his friend using 7-bit address. Hence we are shifting 
-     * back 1-bit right.
+    /* We are configuring MPU9150 to populate data of its friend AK8975 into EXT_SENS_DATA_00. 
+     * As MPU9150 talks to his friend using 7-bit address, we are shifting back 1-bit right.
      */
     st.chip_cfg.compass_addr = akm_addr>>1;
     /*******************************************************************/
