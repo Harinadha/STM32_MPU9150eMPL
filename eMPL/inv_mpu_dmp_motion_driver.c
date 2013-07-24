@@ -42,7 +42,7 @@
 //#define log_e(...)     do {} while (0)
 
 //#elif defined EMPL_TARGET_MSP430
-#if defined STM32F10X_MD
+#if defined (STM32F10X_MD) || defined (STM32F10X_HD) 
 //#include "msp430.h"
 //#include "msp430_clock.h"
 //#include "log.h"

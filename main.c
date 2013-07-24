@@ -1,9 +1,9 @@
 //MPU9150 I2C library test code for ARM STM32F103xx Microcontrollers 
 // 25/06/2013 by Harinadha Reddy Chintalapalli <harinath.ec@gmail.com>
 // Changelog:
-//     2013-07-06 - Configuration of MPU9150 to populate Compass data into FIFO
-//                  is working. Function "setup_compass(void) in inv_mpu.c updated.
-//                  Now the test code can also send Compass data packet.
+//     2013-07-06 - Configuration of MPU9150 to populate Compass data into EXT_SENS_DATA_xx 
+//                  registers is working. Function "setup_compass(void) in inv_mpu.c updated.
+//                  Added Compass data packets streaming code.
 //     2013-06-25 - Initial release. Thanks to Invensense for releasing MPU 
 //                  driver test code for msp430.
 /* ============================================================================================
@@ -78,7 +78,7 @@ static struct hal_s hal = {0};
 
 char rx_new = 0;
 /* The sensors can be mounted onto the board in any orientation. The mounting
- * matrix seen below tells the MPL how to rotate the raw data from thei
+ * matrix seen below tells the MPL how to rotate the raw data from their
  * driver(s).
  * TODO: The following matrices refer to the configuration on an internal test
  * board at Invensense. If needed, please modify the matrices to match the
@@ -822,7 +822,6 @@ void SimpleUSBvirtualCOMtest()
 {
    Set_System();
    Set_USBClock(); 
-   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
    USB_Interrupts_Config();
    USB_Init();
    while(bDeviceState != CONFIGURED); // wait until USB is configured	

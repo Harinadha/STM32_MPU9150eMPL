@@ -69,7 +69,7 @@
 //#define delay_ms    msp430_delay_ms
 //#define get_ms      msp430_get_clock_ms
 ////------------------------------------------------------------------------------
-#if defined STM32F10X_MD
+#if defined (STM32F10X_MD) || defined (STM32F10X_HD) 
 //#include "STM32_I2C.h"
 #include "stm32_CPAL_mpu9150.h"
 #include "mpu9150_interrupts.h"
