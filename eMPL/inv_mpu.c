@@ -1930,7 +1930,12 @@ static int compass_self_test(void)
     short data;
 
     mpu_set_bypass(1);
-
+		/* When "bypass" mode enabled, STM32 needs 8-bit I2C address of compass. Hence 1-bit shifted left. */
+		if(st.chip_cfg.compass_addr != 0)
+			st.chip_cfg.compass_addr = st.chip_cfg.compass_addr << 1;  
+		else
+	    st.chip_cfg.compass_addr = 0x0C <<1; // In case the compass address was not there, the default address of compass could be 0x0C.
+		
     tmp[0] = AKM_POWER_DOWN;
     if (i2c_write(st.chip_cfg.compass_addr, AKM_REG_CNTL, 1, tmp))
         return 0x07;
@@ -1971,6 +1976,9 @@ AKM_restore:
     tmp[0] = SUPPORTS_AK89xx_HIGH_SENS;
     i2c_write(st.chip_cfg.compass_addr, AKM_REG_CNTL, 1, tmp);
     mpu_set_bypass(0);
+		/* When "bypass" mode disabled, MPU9150 talks to Compass using 7-bit I2C address. Hence 1-bit shifted right. */
+    st.chip_cfg.compass_addr = st.chip_cfg.compass_addr >> 1; 
+		
     return result;
 }
 #endif
