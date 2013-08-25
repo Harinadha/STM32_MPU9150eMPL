@@ -5,7 +5,7 @@
 The MPU9150 I2C Library provides simple and intuitive interfaces to MPU9150 on ARM 32-bit STM32F103xx family of microcontrollers. It has the I2C bit- and byte-level communication.
 
 The code is written primarily to support the MPU9150 I2C device implementation.
-This code has been tested using Olimex STM32-P103 developement board(STM32F103RB) & Sparkfun MPU9150 breakout board. Only 5 pins of MPU9150 breakout board are connected to the STM32-P103. By connecting STM32-P103 board to computer USB port, you can send commands to the board & get the data from it.
+This code has been tested using Olimex STM32-P103 developement board & Sparkfun MPU9150 breakout board. The dev board has STM32F103RB MCU. Five pins of MPU9150 breakout board are connected to the STM32-P103 as shown below. By connecting STM32-P103 board to computer USB port, you can send commands to the board & get the data from it.
 USB Virtual COM port driver as well as GUI software needed for testing also available at: http://harinadha.wordpress.com/2013/06/25/mpu9150lib/ 
 For USB connection ciruit, please check the schematics of Olimex STM32-P103 dev board.
 
