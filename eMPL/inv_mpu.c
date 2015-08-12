@@ -2405,11 +2405,6 @@ static int setup_compass(void)
         //log_e("Compass not found.\n");
         return -1;
     }
-    /* We are configuring MPU9150 to populate data of its friend AK8975 into EXT_SENS_DATA_00. 
-     * As MPU9150 talks to his friend using 7-bit address, we are shifting back 1-bit right.
-     */
-    st.chip_cfg.compass_addr = akm_addr>>1;
-    /*******************************************************************/
 
     data[0] = AKM_POWER_DOWN;
     if (i2c_write(st.chip_cfg.compass_addr, AKM_REG_CNTL, 1, data))
@@ -2434,6 +2429,12 @@ static int setup_compass(void)
     delay_ms(1);
 
     mpu_set_bypass(0);
+
+    /* We are configuring MPU9150 to populate data of its friend AK8975 into EXT_SENS_DATA_00. 
+     * As MPU9150 talks to his friend using 7-bit address, we are shifting back 1-bit right.
+     */
+    st.chip_cfg.compass_addr = akm_addr>>1;
+    /*******************************************************************/
 
     /* Set up master mode, master clock, and ES bit. */
     data[0] = 0x40;
